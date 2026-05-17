@@ -65,10 +65,23 @@ to { text-shadow: 0 0 15px #fff, 0 0 25px #e91e63; }
 <div class="progress-bg"><div class="progress-fill"></div></div>
 </div>
 
+<div id="post-page" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:white; z-index:100; padding:20px;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+    <button onclick="showPage('home-page')" style="border:none; background:none; font-size:20px;">✖️ ยกเลิก</button>
+    <strong>สร้างโพสต์ใหม่</strong>
+    <button onclick="submitPost()" style="background:var(--primary); color:white; border:none; padding:5px 15px; border-radius:15px;">โพสต์</button>
+    </div>
+    <input type="text" id="postTitle" placeholder="หัวข้อกระทู้ (เช่น ตามหาเพื่อนทำงาน)" style="width:100%; margin-bottom:15px; padding:12px; border-radius:8px; border:1px solid #ddd; font-size:16px;">
+    <textarea id="postDetail" placeholder="รายละเอียด..." style="width:100%; height:200px; padding:12px; border-radius:8px; border:1px solid #ddd; font-size:14px;"></textarea>
+    <input type="text" id="postImageUrl" placeholder="วางลิงก์รูปภาพ (ถ้ามี)" style="width:100%; margin-top:15px; padding:10px; border-radius:8px; border:1px solid #ddd;">
+    </div>
+
+    <div id="home-page">
+    </div>
 <nav class="bottom-nav">
 <a href="#" class="nav-item active">🏠<br>หน้าหลัก</a>
 <a href="#" class="nav-item">🗂️<br>หมวดหมู่</a>
-<a href="#" class="nav-item" style="font-size: 25px; color: var(--primary);">➕</a>
+<a href="javascript:void(0)" onclick="showPage('post-page')" class="nav-item" style="font-size: 25px; color: var(--primary);">➕</a>
 <a href="#" class="nav-item">🔍<br>ค้นหา</a>
 <a href="#" class="nav-item">👤<br>โปรไฟล์</a>
 </nav>
@@ -112,6 +125,15 @@ const html = `
 chatDisplay.insertAdjacentHTML('beforeend', html);
 chatDisplay.scrollTop = chatDisplay.scrollHeight;
 });
+window.showPage = (pageId) => {
+    if(pageId === 'post-page') {
+    document.getElementById('post-page').style.display = 'block';
+    document.getElementById('home-page').style.display = 'none';
+    } else {
+    document.getElementById('post-page').style.display = 'none';
+    document.getElementById('home-page').style.display = 'block';
+    }
+    };
 </script>
 
 </body>
