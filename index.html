@@ -66,12 +66,46 @@ body { background: var(--bg); padding-bottom: 120px; } /* เผื่อที�
 <div id="post-feed" style="padding: 10px;"></div>
 </div>
 
-<div id="post-page" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:white; z-index:100; padding:20px;">
-<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-<button onclick="showPage('home-page')" style="border:none; background:none; font-size:20px;">✖️ ยกเลิก</button>
-<strong>สร้างโพสต์ใหม่</strong>
-<button onclick="submitPost()" style="background:var(--primary); color:white; border:none; padding:5px 15px; border-radius:15px;">โพสต์</button>
-</div>
+<div id="post-page" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:#f8f9fa; z-index:100; overflow-y:auto; padding-bottom:100px;">
+        <div style="background:var(--primary); color:white; padding:20px 15px; display:flex; justify-content:space-between; align-items:center; position:sticky; top:0; z-index:10;">
+                <span onclick="showPage('home-page')" style="cursor:pointer; font-size:18px;">✖️</span>
+                        <strong style="font-size:18px;">ตั้งกระทู้ใหม่</strong>
+                                <span style="font-size:18px;">🔔</span>
+                                    </div>
+
+                                        <div style="padding:20px;">
+                                                <label style="display:block; font-size:14px; margin-bottom:8px; font-weight:bold; color:#555;">หมวดหมู่</label>
+                                                        <select id="postCat" style="width:100%; margin-bottom:20px; padding:12px; border-radius:10px; border:1px solid #ddd; background:white; font-size:14px; appearance:none;">
+                                                                    <option value="ทั่วไป">ทั่วไป (General)</option>
+                                                                                <option value="หางาน">หางาน (Job)</option>
+                                                                                            <option value="ประกาศ">ประกาศ (News)</option>
+                                                                                                    </select>
+
+                                                                                                            <label style="display:block; font-size:14px; margin-bottom:8px; font-weight:bold; color:#555;">หัวข้อ</label>
+                                                                                                                    <input type="text" id="postTitle" placeholder="ระบุหัวข้อที่น่าสนใจ..." style="width:100%; margin-bottom:20px; padding:12px; border-radius:10px; border:1px solid #ddd; font-size:14px; outline:none;">
+
+                                                                                                                            <label style="display:block; font-size:14px; margin-bottom:8px; font-weight:bold; color:#555;">รายละเอียด</label>
+                                                                                                                                    <textarea id="postDetail" placeholder="พิมพ์รายละเอียดที่นี่..." style="width:100%; height:150px; padding:12px; border-radius:10px; border:1px solid #ddd; font-size:14px; outline:none; resize:none;"></textarea>
+
+                                                                                                                                            <label style="display:block; font-size:14px; margin:20px 0 8px; font-weight:bold; color:#555;">รูปภาพแนบ</label>
+                                                                                                                                                    <div style="width:100%; border:2px dashed #ccc; border-radius:15px; padding:30px; text-align:center; background:white; cursor:pointer;" onclick="document.getElementById('postImageUrl').focus()">
+                                                                                                                                                                <div style="font-size:40px; color:#aaa; margin-bottom:10px;">🖼️</div>
+                                                                                                                                                                            <div style="color:#888; font-size:14px;">แนบรูปภาพ</div>
+                                                                                                                                                                                    </div>
+                                                                                                                                                                                            <input type="text" id="postImageUrl" placeholder="วางลิงก์รูปภาพตรงนี้..." style="width:100%; margin-top:10px; padding:10px; border-radius:8px; border:1px solid #eee; font-size:12px; outline:none;">
+                                                                                                                                                                                                    <p style="text-align:center; color:#aaa; font-size:11px; margin-top:8px;">เพิ่มรูปได้สูงสุด 1 รูป (ผ่าน URL)</p>
+
+                                                                                                                                                                                                            <label style="display:block; font-size:14px; margin:20px 0 8px; font-weight:bold; color:#555;">ชื่อผู้โพสต์</label>
+                                                                                                                                                                                                                    <div style="background:#eee; padding:12px; border-radius:10px; color:#666; font-size:14px; border:1px solid #ddd;">
+                                                                                                                                                                                                                                ภู ADMIN 😊
+                                                                                                                                                                                                                                        </div>
+                                                                                                                                                                                                                                                <p style="color:#aaa; font-size:11px; margin-top:5px;">ชื่อดึงมาจากระบบโดยอัตโนมัติ</p>
+
+                                                                                                                                                                                                                                                        <button onclick="submitPost()" style="width:100%; background:var(--primary); color:white; border:none; padding:15px; border-radius:15px; font-size:16px; font-weight:bold; margin-top:30px; box-shadow: 0 4px 15px rgba(46, 26, 148, 0.3);">
+                                                                                                                                                                                                                                                                    ลงประกาศเลย
+                                                                                                                                                                                                                                                                            </button>
+                                                                                                                                                                                                                                                                                </div>
+                                                                                                                                                                                                                                                                                </div>                                                                                                                                                                                                                                                                          
 <select id="postCat" style="width:100%; margin-bottom:15px; padding:12px; border-radius:8px; border:1px solid #ddd;">
 <option value="ทั่วไป">เลือกหมวดหมู่: ทั่วไป</option>
 <option value="หางาน">หางาน</option>
