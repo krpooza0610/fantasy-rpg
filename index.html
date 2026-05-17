@@ -25,37 +25,29 @@ body { background: var(--bg); padding-bottom: 80px; }
 .bottom-nav { position: fixed; bottom: 0; width: 100%; background: white; height: 65px; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #ddd; }
 .nav-item { text-align: center; font-size: 10px; color: #666; text-decoration: none; flex: 1; }
 .nav-item.active { color: var(--primary); }
-.glow-text {
-color: #fff;
-font-weight: bold;
-text-shadow: 0 0 10px #fff, 0 0 20px #e91e63, 0 0 30px #e91e63;
-animation: glow 1.5s ease-in-out infinite alternate;
-}
-@keyframes glow {
-from { text-shadow: 0 0 5px #fff, 0 0 10px #2e1a94; }
-to { text-shadow: 0 0 15px #fff, 0 0 25px #e91e63; }
-}
+.glow-text { color: #fff; font-weight: bold; text-shadow: 0 0 10px #fff, 0 0 20px #e91e63, 0 0 30px #e91e63; animation: glow 1.5s ease-in-out infinite alternate; }
+@keyframes glow { from { text-shadow: 0 0 5px #fff, 0 0 10px #2e1a94; } to { text-shadow: 0 0 15px #fff, 0 0 25px #e91e63; } }
 </style>
 </head>
 <body>
 
+<div id="home-page">
 <div class="header">
-    <div>
-    <strong>แรงงานไทยในเกาหลี</strong><br>
-    <span class="glow-text" style="font-size:12px;">เราจะรวยไปด้วยกัน</span>
-    </div>
-    <div style="font-size: 20px;">🔔</div>
-    </div>
+<div>
+<strong>แรงงานไทยในเกาหลี</strong><br>
+<span class="glow-text" style="font-size:12px;">เราจะรวยไปด้วยกัน</span>
+</div>
+<div style="font-size: 20px;">🔔</div>
+</div>
 
 <div class="shoutbox">
 <div class="shoutbox-header">
 <span>🟢 ห้องสนทนา (Shoutbox)</span>
 <span style="color: #2ecc71;">1 ออนไลน์</span>
 </div>
-<div id="chat-display">
-</div>
+<div id="chat-display"></div>
 <div class="chat-input-wrap">
-<input type="text" id="chatInput" placeholder="พิมพ์ข้อความ... (Type a message)">
+<input type="text" id="chatInput" placeholder="พิมพ์ข้อความ...">
 <button onclick="sendChat()" style="border:none; background:none; font-size:20px; cursor:pointer;">✈️</button>
 </div>
 </div>
@@ -65,21 +57,22 @@ to { text-shadow: 0 0 15px #fff, 0 0 25px #e91e63; }
 <div class="progress-bg"><div class="progress-fill"></div></div>
 </div>
 
-<div id="post-page" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:white; z-index:100; padding:20px;">
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-    <button onclick="showPage('home-page')" style="border:none; background:none; font-size:20px;">✖️ ยกเลิก</button>
-    <strong>สร้างโพสต์ใหม่</strong>
-    <button onclick="submitPost()" style="background:var(--primary); color:white; border:none; padding:5px 15px; border-radius:15px;">โพสต์</button>
-    </div>
-    <input type="text" id="postTitle" placeholder="หัวข้อกระทู้ (เช่น ตามหาเพื่อนทำงาน)" style="width:100%; margin-bottom:15px; padding:12px; border-radius:8px; border:1px solid #ddd; font-size:16px;">
-    <textarea id="postDetail" placeholder="รายละเอียด..." style="width:100%; height:200px; padding:12px; border-radius:8px; border:1px solid #ddd; font-size:14px;"></textarea>
-    <input type="text" id="postImageUrl" placeholder="วางลิงก์รูปภาพ (ถ้ามี)" style="width:100%; margin-top:15px; padding:10px; border-radius:8px; border:1px solid #ddd;">
-    </div>
+<div id="post-feed" style="padding: 10px;"></div>
+</div>
 
-    <div id="home-page">
-    </div>
+<div id="post-page" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:white; z-index:100; padding:20px;">
+<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+<button onclick="showPage('home-page')" style="border:none; background:none; font-size:20px;">✖️ ยกเลิก</button>
+<strong>สร้างโพสต์ใหม่</strong>
+<button onclick="submitPost()" style="background:var(--primary); color:white; border:none; padding:5px 15px; border-radius:15px; font-family:'Chakra Petch';">โพสต์</button>
+</div>
+<input type="text" id="postTitle" placeholder="หัวข้อกระทู้" style="width:100%; margin-bottom:15px; padding:12px; border-radius:8px; border:1px solid #ddd; font-size:16px; outline:none;">
+<textarea id="postDetail" placeholder="รายละเอียด..." style="width:100%; height:200px; padding:12px; border-radius:8px; border:1px solid #ddd; font-size:14px; outline:none;"></textarea>
+<input type="text" id="postImageUrl" placeholder="วางลิงก์รูปภาพ (URL)" style="width:100%; margin-top:15px; padding:10px; border-radius:8px; border:1px solid #ddd; outline:none;">
+</div>
+
 <nav class="bottom-nav">
-<a href="#" class="nav-item active">🏠<br>หน้าหลัก</a>
+<a href="javascript:void(0)" onclick="showPage('home-page')" class="nav-item active">🏠<br>หน้าหลัก</a>
 <a href="#" class="nav-item">🗂️<br>หมวดหมู่</a>
 <a href="javascript:void(0)" onclick="showPage('post-page')" class="nav-item" style="font-size: 25px; color: var(--primary);">➕</a>
 <a href="#" class="nav-item">🔍<br>ค้นหา</a>
@@ -88,7 +81,7 @@ to { text-shadow: 0 0 15px #fff, 0 0 25px #e91e63; }
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+import { getDatabase, ref, push, onChildAdded, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
 const firebaseConfig = {
 apiKey: "AIzaSyAaUWvOllKDx7zFf_Y",
@@ -102,39 +95,73 @@ appId: "1:962758734967:web:d6e5e9...",
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
-const chatRef = ref(db, "chats");
 
+// --- ระบบสลับหน้า ---
+window.showPage = (pageId) => {
+if(pageId === 'post-page') {
+document.getElementById('post-page').style.display = 'block';
+document.getElementById('home-page').style.display = 'none';
+} else {
+document.getElementById('post-page').style.display = 'none';
+document.getElementById('home-page').style.display = 'block';
+}
+};
+
+// --- ระบบแชทสด ---
 window.sendChat = () => {
 const input = document.getElementById('chatInput');
 if (input.value.trim() !== "") {
-push(chatRef, { name: "ภู ADMIN", text: input.value, time: Date.now() });
+push(ref(db, "chats"), { name: "ภู ADMIN", text: input.value, time: Date.now() });
 input.value = "";
 }
 };
 
-onChildAdded(chatRef, (data) => {
+onChildAdded(ref(db, "chats"), (data) => {
 const chat = data.val();
-const chatDisplay = document.getElementById('chat-display');
-const html = `
-<div class="chat-msg">
-<div class="avatar">${chat.name.charAt(0)}</div>
-<div class="msg-content">
-<strong>${chat.name}</strong><br>${chat.text}
-</div>
-</div>`;
-chatDisplay.insertAdjacentHTML('beforeend', html);
-chatDisplay.scrollTop = chatDisplay.scrollHeight;
+const html = `<div class="chat-msg"><div class="avatar">${chat.name.charAt(0)}</div><div class="msg-content"><strong>${chat.name}</strong><br>${chat.text}</div></div>`;
+document.getElementById('chat-display').insertAdjacentHTML('beforeend', html);
+document.getElementById('chat-display').scrollTop = document.getElementById('chat-display').scrollHeight;
 });
-window.showPage = (pageId) => {
-    if(pageId === 'post-page') {
-    document.getElementById('post-page').style.display = 'block';
-    document.getElementById('home-page').style.display = 'none';
-    } else {
-    document.getElementById('post-page').style.display = 'none';
-    document.getElementById('home-page').style.display = 'block';
-    }
-    };
-</script>
 
+// --- ระบบโพสต์กระทู้ ---
+window.submitPost = () => {
+const title = document.getElementById('postTitle').value;
+const detail = document.getElementById('postDetail').value;
+const img = document.getElementById('postImageUrl').value;
+if (title.trim() !== "" && detail.trim() !== "") {
+push(ref(db, "posts"), { title, detail, img, author: "ภู ADMIN", time: Date.now() })
+.then(() => {
+document.getElementById('postTitle').value = "";
+document.getElementById('postDetail').value = "";
+document.getElementById('postImageUrl').value = "";
+showPage('home-page');
+});
+} else { alert("กรุณากรอกข้อมูลให้ครบครับ"); }
+};
+
+// --- ดึงโพสต์มาโชว์ ---
+onChildAdded(ref(db, "posts"), (data) => {
+const post = data.val();
+const id = data.key;
+const imgHtml = post.img ? `<img src="${post.img}" style="width:100%; border-radius:10px; margin-top:10px;">` : '';
+const card = `
+<div class="shoutbox" id="${id}" style="position:relative;">
+<button onclick="deletePost('${id}')" style="position:absolute; top:10px; right:15px; border:none; background:none; color:red; font-size:18px;">🗑️</button>
+<strong style="color:var(--primary); font-size:16px;">${post.title}</strong>
+<p style="font-size:14px; margin-top:8px;">${post.detail}</p>
+${imgHtml}
+<div style="font-size:10px; color:#aaa; margin-top:10px;">โดย: ${post.author}</div>
+</div>`;
+document.getElementById('post-feed').insertAdjacentHTML('afterbegin', card);
+});
+
+// --- ลบโพสต์ ---
+window.deletePost = (id) => {
+if(confirm("ลบโพสต์นี้ใช่ไหมครับ?")) {
+remove(ref(db, "posts/" + id));
+document.getElementById(id).remove();
+}
+};
+</script>
 </body>
 </html>
