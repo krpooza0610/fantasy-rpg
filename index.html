@@ -11,41 +11,46 @@
 body { background: var(--bg); padding-bottom: 140px; }
 .header { background: var(--primary); color: white; padding: 15px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 50; }
 .shoutbox { background: white; margin: 10px; border-radius: 15px; padding: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-.shoutbox-header { display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 14px; }
 #chat-display { height: 180px; overflow-y: auto; margin-bottom: 10px; display: flex; flex-direction: column; gap: 10px; }
 .chat-msg { display: flex; gap: 10px; align-items: flex-start; }
-.avatar { width: 35px; height: 35px; border-radius: 50%; background: #2196f3; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; flex-shrink: 0; }
+.avatar { width: 35px; height: 35px; border-radius: 50%; background: #2196f3; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; flex-shrink: 0; overflow: hidden; }
+.avatar img { width: 100%; height: 100%; object-fit: cover; }
 .msg-content { background: #f0f2f5; padding: 8px 12px; border-radius: 12px; font-size: 13px; }
 .chat-input-wrap { display: flex; gap: 8px; }
 .chat-input-wrap input { flex: 1; padding: 10px 15px; border-radius: 25px; border: 1px solid #ddd; outline: none; font-size: 13px; }
 .filter-wrap { display: flex; gap: 8px; overflow-x: auto; padding: 10px; white-space: nowrap; -webkit-overflow-scrolling: touch; }
-.filter-btn { padding: 8px 16px; border-radius: 20px; border: none; background: white; font-size: 12px; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+.filter-btn { padding: 8px 16px; border-radius: 20px; border: none; background: white; font-size: 12px; cursor: pointer; }
 .filter-btn.active { background: var(--primary); color: white; }
-.bottom-fixed-wrap { position: fixed; bottom: 0; width: 100%; background: white; border-top: 1px solid #ddd; z-index: 99; }
-.level-section { padding: 8px 15px; background: #fff; }
-.level-info { display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 4px; font-weight: bold; }
-.progress-bg { background: #eee; height: 6px; border-radius: 10px; overflow: hidden; }
-.progress-fill { background: linear-gradient(90deg, #2e1a94, #e91e63); width: 30%; height: 100%; }
+.bottom-fixed-wrap { position: fixed; bottom: 0; width: 100%; background: white; border-top: 1px solid #ddd; z-index: 99; display: none; }
 .bottom-nav { width: 100%; height: 65px; display: flex; justify-content: space-around; align-items: center; }
 .nav-item { text-align: center; font-size: 10px; color: #666; text-decoration: none; flex: 1; cursor: pointer; }
 .nav-item.active { color: var(--primary); font-weight: bold; }
-.glow-text { color: #fff; font-weight: bold; text-shadow: 0 0 10px #fff, 0 0 20px #e91e63; animation: glow 1.5s ease-in-out infinite alternate; }
-@keyframes glow { from { text-shadow: 0 0 5px #fff, 0 0 10px #2e1a94; } to { text-shadow: 0 0 15px #fff, 0 0 25px #e91e63; } }
 .page { display: none; }
 .page.active { display: block; }
-.search-box { background: white; margin: 10px; border-radius: 10px; padding: 10px; display: flex; align-items: center; border: 1px solid #ddd; }
-.profile-card { background: white; margin: 15px; border-radius: 15px; padding: 20px; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+/* หน้า Login */
+#login-page { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--primary); z-index: 200; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; padding: 20px; text-align: center; }
+.login-btn { width: 100%; max-width: 280px; padding: 15px; border-radius: 30px; border: none; font-weight: bold; margin-top: 15px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; }
+.btn-google { background: white; color: #444; }
+.btn-guest { background: rgba(255,255,255,0.2); color: white; border: 1px solid white; }
 </style>
 </head>
 <body>
 
-<div id="home-page" class="page active">
+<div id="login-page">
+<h2 style="font-size: 28px; margin-bottom: 10px;">แรงงานไทยในเกาหลี</h2>
+<p style="margin-bottom: 40px; opacity: 0.8;">ยินดีต้อนรับครับภู เลือกวิธีเข้าใช้งานได้เลย</p>
+<button class="login-btn btn-google" onclick="loginGoogle()">
+<img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="20"> เข้าด้วย Google
+</button>
+<button class="login-btn btn-guest" onclick="loginGuest()">เข้าใช้งานแบบ Guest</button>
+</div>
+
+<div id="home-page" class="page">
 <div class="header">
-<div><strong>แรงงานไทยในเกาหลี</strong><br><span class="glow-text" style="font-size:12px;">เราจะรวยไปด้วยกัน</span></div>
-<div style="font-size: 20px;">🔔</div>
+<div><strong>แรงงานไทยในเกาหลี</strong><br><span id="user-welcome" style="font-size:12px; opacity:0.8;">ยินดีต้อนรับ</span></div>
+<div onclick="logout()" style="font-size: 14px; background: rgba(255,255,255,0.2); padding: 5px 10px; border-radius: 10px;">ออกจากระบบ</div>
 </div>
 <div class="shoutbox">
-<div class="shoutbox-header"><span>🟢 ห้องสนทนา (Shoutbox)</span><span style="color: #2ecc71;">1 ออนไลน์</span></div>
 <div id="chat-display"></div>
 <div class="chat-input-wrap">
 <input type="text" id="chatInput" placeholder="พิมพ์ข้อความ...">
@@ -53,10 +58,9 @@ body { background: var(--bg); padding-bottom: 140px; }
 </div>
 </div>
 <div class="filter-wrap">
-<button class="filter-btn active" onclick="filterPosts('ทั้งหมด', this)">ทั้งหมด (All)</button>
+<button class="filter-btn active" onclick="filterPosts('ทั้งหมด', this)">ทั้งหมด</button>
 <button class="filter-btn" onclick="filterPosts('หางาน', this)">หางาน</button>
 <button class="filter-btn" onclick="filterPosts('ทั่วไป', this)">ทั่วไป</button>
-<button class="filter-btn" onclick="filterPosts('ประกาศ', this)">ประกาศ</button>
 </div>
 <div id="post-feed" style="padding: 10px;"></div>
 </div>
@@ -64,64 +68,40 @@ body { background: var(--bg); padding-bottom: 140px; }
 <div id="cat-page" class="page">
 <div class="header"><strong>หมวดหมู่</strong></div>
 <div style="padding: 15px;">
-<div class="shoutbox" onclick="filterPosts('หางาน'); showPage('home-page')" style="cursor:pointer;">💼 หางาน (Jobs)</div>
-<div class="shoutbox" onclick="filterPosts('ทั่วไป'); showPage('home-page')" style="cursor:pointer;">💬 ทั่วไป (General)</div>
-<div class="shoutbox" onclick="filterPosts('ประกาศ'); showPage('home-page')" style="cursor:pointer;">📢 ประกาศ (News)</div>
+<div class="shoutbox" onclick="filterPosts('หางาน'); showPage('home-page')">💼 หางาน</div>
+<div class="shoutbox" onclick="filterPosts('ทั่วไป'); showPage('home-page')">💬 ทั่วไป</div>
 </div>
 </div>
 
 <div id="post-page" class="page" style="position:fixed; top:0; left:0; width:100%; height:100%; background:#f8f9fa; z-index:100; overflow-y:auto; padding-bottom:100px;">
-<div style="background:var(--primary); color:white; padding:20px 15px; display:flex; justify-content:space-between; align-items:center; position:sticky; top:0; z-index:10;">
-<span onclick="showPage('home-page')" style="cursor:pointer; font-size:18px;">✖️</span>
-<strong style="font-size:18px;">ตั้งกระทู้ใหม่</strong>
-<span style="font-size:18px;">🔔</span>
+<div class="header">
+<span onclick="showPage('home-page')">✖️</span>
+<strong>ตั้งกระทู้ใหม่</strong>
+<span>🔔</span>
 </div>
 <div style="padding:20px;">
-<label style="display:block; font-size:14px; margin-bottom:8px; font-weight:bold; color:#555;">หมวดหมู่</label>
-<select id="postCat" style="width:100%; margin-bottom:20px; padding:12px; border-radius:10px; border:1px solid #ddd; background:white; font-size:14px;">
-<option value="ทั่วไป">ทั่วไป (General)</option>
-<option value="หางาน">หางาน (Job)</option>
-<option value="ประกาศ">ประกาศ (News)</option>
+<label>หมวดหมู่</label>
+<select id="postCat" style="width:100%; margin-bottom:15px; padding:12px; border-radius:10px; border:1px solid #ddd;">
+<option value="ทั่วไป">ทั่วไป</option>
+<option value="หางาน">หางาน</option>
 </select>
-<label style="display:block; font-size:14px; margin-bottom:8px; font-weight:bold; color:#555;">หัวข้อ</label>
-<input type="text" id="postTitle" placeholder="ระบุหัวข้อที่น่าสนใจ..." style="width:100%; margin-bottom:20px; padding:12px; border-radius:10px; border:1px solid #ddd; font-size:14px; outline:none;">
-<label style="display:block; font-size:14px; margin-bottom:8px; font-weight:bold; color:#555;">รายละเอียด</label>
-<textarea id="postDetail" placeholder="พิมพ์รายละเอียดที่นี่..." style="width:100%; height:150px; padding:12px; border-radius:10px; border:1px solid #ddd; font-size:14px; outline:none; resize:none;"></textarea>
-<label style="display:block; font-size:14px; margin:20px 0 8px; font-weight:bold; color:#555;">รูปภาพแนบ</label>
-<div style="width:100%; border:2px dashed #ccc; border-radius:15px; padding:30px; text-align:center; background:white; cursor:pointer;" onclick="document.getElementById('postImageUrl').focus()">
-<div style="font-size:40px; color:#aaa; margin-bottom:10px;">🖼️</div>
-<div style="color:#888; font-size:14px;">แนบรูปภาพ</div>
-</div>
-<input type="text" id="postImageUrl" placeholder="ลิงก์รูปภาพ (URL)" style="width:100%; margin-top:10px; padding:10px; border-radius:8px; border:1px solid #eee; font-size:12px; outline:none;">
-<p style="text-align:center; color:#aaa; font-size:11px; margin-top:8px;">เพิ่มรูปได้สูงสุด 1 รูป (ผ่าน URL)</p>
-<label style="display:block; font-size:14px; margin:20px 0 8px; font-weight:bold; color:#555;">ชื่อผู้โพสต์</label>
-<div style="background:#eee; padding:12px; border-radius:10px; color:#666; font-size:14px; border:1px solid #ddd;">ภู ADMIN 😊</div>
-<button onclick="submitPost()" style="width:100%; background:var(--primary); color:white; border:none; padding:15px; border-radius:15px; font-size:16px; font-weight:bold; margin-top:30px;">ลงประกาศเลย</button>
-</div>
-</div>
-
-<div id="search-page" class="page">
-<div class="header"><strong>ค้นหา</strong></div>
-<div class="search-box">
-<span style="margin-right:10px;">🔍</span>
-<input type="text" placeholder="ค้นหาโพสต์..." style="border:none; outline:none; width:100%;">
+<input type="text" id="postTitle" placeholder="หัวข้อ..." style="width:100%; margin-bottom:15px; padding:12px; border-radius:10px; border:1px solid #ddd;">
+<textarea id="postDetail" placeholder="รายละเอียด..." style="width:100%; height:120px; padding:12px; border-radius:10px; border:1px solid #ddd;"></textarea>
+<input type="text" id="postImageUrl" placeholder="ลิงก์รูปภาพ (ถ้ามี)" style="width:100%; margin-bottom:15px; padding:12px; border-radius:10px; border:1px solid #ddd;">
+<button onclick="submitPost()" style="width:100%; background:var(--primary); color:white; border:none; padding:15px; border-radius:15px; font-weight:bold;">ลงประกาศเลย</button>
 </div>
 </div>
 
 <div id="profile-page" class="page">
 <div class="header"><strong>โปรไฟล์</strong></div>
-<div class="profile-card">
-<div class="avatar" style="width:80px; height:80px; font-size:30px; margin: 0 auto 15px;">ภ</div>
-<h3>ภู ADMIN 😊</h3>
-<p style="color:#888;">แรงงานตัวจริง ในเกาหลี</p>
-<div style="margin-top:20px; display:flex; justify-content:space-around; border-top:1px solid #eee; padding-top:15px;">
-<div><strong>12</strong><br><small>โพสต์</small></div>
-<div><strong>Lv.1</strong><br><small>เลเวล</small></div>
-</div>
+<div style="text-align:center; padding:30px; background:white; margin:10px; border-radius:15px;">
+<div id="prof-img" class="avatar" style="width:80px; height:80px; margin:0 auto 15px; font-size:30px;">?</div>
+<h3 id="prof-name">User</h3>
+<p id="prof-type" style="color:#888;">สถานะ: Guest</p>
 </div>
 </div>
 
-<div class="bottom-fixed-wrap">
+<div class="bottom-fixed-wrap" id="bottom-bar">
 <div class="level-section">
 <div class="level-info"><span>Lv.1</span><span style="color: #888;">30/100</span></div>
 <div class="progress-bg"><div class="progress-fill"></div></div>
@@ -129,8 +109,7 @@ body { background: var(--bg); padding-bottom: 140px; }
 <nav class="bottom-nav">
 <div onclick="showPage('home-page')" id="nav-home" class="nav-item active">🏠<br>หน้าหลัก</div>
 <div onclick="showPage('cat-page')" id="nav-cat" class="nav-item">🗂️<br>หมวดหมู่</div>
-<div onclick="showPage('post-page')" class="nav-item" style="font-size: 25px; color: var(--primary);">➕</div>
-<div onclick="showPage('search-page')" id="nav-search" class="nav-item">🔍<br>ค้นหา</div>
+<div onclick="showPage('post-page')" class="nav-item" style="font-size:25px; color:var(--primary);">➕</div>
 <div onclick="showPage('profile-page')" id="nav-profile" class="nav-item">👤<br>โปรไฟล์</div>
 </nav>
 </div>
@@ -138,6 +117,7 @@ body { background: var(--bg); padding-bottom: 140px; }
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getDatabase, ref, push, onChildAdded, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+import { getAuth, signInWithPopup, GoogleAuthProvider, signInAnonymously, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
 const firebaseConfig = {
 apiKey: "AIzaSyAaUWvOllKDx7zFf_Y",
@@ -151,30 +131,68 @@ appId: "1:962758734967:web:d6e5e9...",
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
+const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
 
-// ฟังก์ชันสลับหน้า
+let currentUser = null;
+
+// ฟังก์ชัน Login
+window.loginGoogle = () => {
+signInWithPopup(auth, provider).catch(err => alert("เกิดข้อผิดพลาด: " + err.message));
+};
+
+window.loginGuest = () => {
+signInAnonymously(auth).catch(err => alert("เกิดข้อผิดพลาด: " + err.message));
+};
+
+window.logout = () => {
+if(confirm("ต้องการออกจากระบบใช่ไหม?")) signOut(auth).then(() => location.reload());
+};
+
+// ตรวจสอบสถานะการ Login
+onAuthStateChanged(auth, (user) => {
+if (user) {
+currentUser = {
+uid: user.uid,
+name: user.displayName || "Guest_" + user.uid.substring(0,4),
+photo: user.photoURL || ""
+};
+document.getElementById('login-page').style.display = 'none';
+document.getElementById('home-page').classList.add('active');
+document.getElementById('bottom-bar').style.display = 'block';
+updateUI();
+} else {
+document.getElementById('login-page').style.display = 'flex';
+}
+});
+
+function updateUI() {
+document.getElementById('user-welcome').innerText = "สวัสดีคุณ " + currentUser.name;
+document.getElementById('prof-name').innerText = currentUser.name;
+document.getElementById('prof-type').innerText = currentUser.photo ? "สถานะ: บัญชี Google" : "สถานะ: Guest";
+if(currentUser.photo) document.getElementById('prof-img').innerHTML = `<img src="${currentUser.photo}">`;
+}
+
 window.showPage = (pageId) => {
 document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
 document.getElementById(pageId).classList.add('active');
-// อัปเดตสีเมนู
 document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
 if(pageId === 'home-page') document.getElementById('nav-home').classList.add('active');
-if(pageId === 'cat-page') document.getElementById('nav-cat').classList.add('active');
-if(pageId === 'search-page') document.getElementById('nav-search').classList.add('active');
 if(pageId === 'profile-page') document.getElementById('nav-profile').classList.add('active');
 };
 
 window.sendChat = () => {
 const input = document.getElementById('chatInput');
-if (input.value.trim() !== "") {
-push(ref(db, "chats"), { name: "ภู ADMIN", text: input.value, time: Date.now() });
+if (input.value.trim() !== "" && currentUser) {
+push(ref(db, "chats"), { name: currentUser.name, text: input.value, photo: currentUser.photo, time: Date.now() });
 input.value = "";
 }
 };
 
 onChildAdded(ref(db, "chats"), (data) => {
 const chat = data.val();
-const html = `<div class="chat-msg"><div class="avatar">${chat.name.charAt(0)}</div><div class="msg-content"><strong>${chat.name}</strong><br>${chat.text}</div></div>`;
+const avatar = chat.photo ? `<img src="${chat.photo}">` : chat.name.charAt(0);
+const html = `<div class="chat-msg"><div class="avatar">${avatar}</div><div class="msg-content"><strong>${chat.name}</strong><br>${chat.text}</div></div>`;
 const display = document.getElementById('chat-display');
 display.insertAdjacentHTML('beforeend', html);
 display.scrollTop = display.scrollHeight;
@@ -185,12 +203,11 @@ const title = document.getElementById('postTitle').value;
 const detail = document.getElementById('postDetail').value;
 const img = document.getElementById('postImageUrl').value;
 const cat = document.getElementById('postCat').value;
-if (title.trim() !== "" && detail.trim() !== "") {
-push(ref(db, "posts"), { title, detail, img, cat, author: "ภู ADMIN", time: Date.now() })
+if (title.trim() && detail.trim() && currentUser) {
+push(ref(db, "posts"), { title, detail, img, cat, author: currentUser.name, uid: currentUser.uid, time: Date.now() })
 .then(() => {
 document.getElementById('postTitle').value = "";
 document.getElementById('postDetail').value = "";
-document.getElementById('postImageUrl').value = "";
 showPage('home-page');
 });
 }
@@ -207,8 +224,9 @@ function renderPosts(posts) {
 const feed = document.getElementById('post-feed');
 feed.innerHTML = "";
 posts.forEach(post => {
+const delBtn = (currentUser && post.uid === currentUser.uid) ? `<button onclick="deletePost('${post.id}')" style="position:absolute; top:10px; right:15px; border:none; background:none; color:red;">🗑️</button>` : '';
 const imgHtml = post.img ? `<img src="${post.img}" style="width:100%; border-radius:10px; margin-top:10px;">` : '';
-const card = `<div class="shoutbox" id="${post.id}" style="position:relative;"><button onclick="deletePost('${post.id}')" style="position:absolute; top:10px; right:15px; border:none; background:none; color:red; font-size:18px;">🗑️</button><span style="font-size:10px; background:#eee; padding:2px 8px; border-radius:10px;">${post.cat || 'ทั่วไป'}</span><br><strong style="color:var(--primary); font-size:16px;">${post.title}</strong><p style="font-size:14px; margin-top:8px;">${post.detail}</p>${imgHtml}</div>`;
+const card = `<div class="shoutbox" id="${post.id}" style="position:relative;">${delBtn}<span style="font-size:10px; background:#eee; padding:2px 8px; border-radius:10px;">${post.cat}</span><br><strong>${post.title}</strong><p style="font-size:14px; margin-top:8px;">${post.detail}</p>${imgHtml}<br><small style="color:#aaa;">โดย: ${post.author}</small></div>`;
 feed.insertAdjacentHTML('beforeend', card);
 });
 }
@@ -218,12 +236,11 @@ if(btn) {
 document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
 btn.classList.add('active');
 }
-if (category === 'ทั้งหมด') { renderPosts(allPosts); } 
-else { renderPosts(allPosts.filter(p => p.cat === category)); }
+renderPosts(category === 'ทั้งหมด' ? allPosts : allPosts.filter(p => p.cat === category));
 };
 
 window.deletePost = (id) => {
-if(confirm("ลบโพสต์นี้ใช่ไหมครับ?")) {
+if(confirm("ลบโพสต์นี้ใช่ไหม?")) {
 remove(ref(db, "posts/" + id));
 allPosts = allPosts.filter(p => p.id !== id);
 renderPosts(allPosts);
