@@ -128,7 +128,58 @@
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     <a href="#" class="nav-item">🔍<br>ค้นหา</a>
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         <a href="#" class="nav-item">👤<br>โปรไฟล์</a>
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         </nav>
+<script type="module">
+          import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+            import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
+              // ใช้ค่ากุญแจจากรูปที่ภูส่งมา
+                const firebaseConfig = {
+                    apiKey: "AIzaSyAaUWvOllKDx7zFf_Y",
+                        authDomain: "thai-korea-app.firebaseapp.com",
+                            projectId: "thai-korea-app",
+                                storageBucket: "thai-korea-app.appspot.com",
+                                    messagingSenderId: "962758734967",
+                                        appId: "1:962758734967:web:d6e5e9...",
+                                            measurementId: "G-FD6YYTFL8F"
+                                              };
+
+                                                // เริ่มต้นระบบ
+                                                  const app = initializeApp(firebaseConfig);
+                                                    const db = getDatabase(app);
+                                                      const chatRef = ref(db, "messages");
+
+                                                        const chatContainer = document.querySelector(".chat-container");
+                                                          const chatInput = document.querySelector(".chat-input-wrap input");
+                                                            const sendBtn = document.querySelector(".send-btn");
+
+                                                              // ฟังก์ชันส่งข้อความ
+                                                                sendBtn.onclick = () => {
+                                                                    if (chatInput.value.trim() !== "") {
+                                                                          push(chatRef, {
+                                                                                  name: "P.ADMIN😁", // เดี๋ยวอนาคตเรามาทำระบบเปลี่ยนชื่อกัน
+                                                                                          text: chatInput.value,
+                                                                                                  timestamp: Date.now()
+                                                                                                        });
+                                                                                                              chatInput.value = "";
+                                                                                                                  }
+                                                                                                                    };
+
+                                                                                                                      // ฟังก์ชันดึงข้อความมาโชว์แบบ Realtime
+                                                                                                                        onChildAdded(chatRef, (data) => {
+                                                                                                                            const msg = data.val();
+                                                                                                                                const msgHtml = `
+                                                                                                                                      <div class="chat-msg">
+                                                                                                                                              <div class="avatar" style="background: #2196f3;">P.</div>
+                                                                                                                                                      <div class="msg-text">
+                                                                                                                                                                <strong>${msg.name}</strong><br>
+                                                                                                                                                                          ${msg.text}
+                                                                                                                                                                                  </div>
+                                                                                                                                                                                        </div>`;
+                                                                                                                                                                                            chatContainer.innerHTML += msgHtml;
+                                                                                                                                                                                                chatContainer.scrollTop = chatContainer.scrollHeight; // เลื่อนลงล่างสุดอัตโนมัติ
+                                                                                                                                                                                                  });
+                                                                                                                                                                                                  </script>
+                                                                                                                                                                                                  
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         </body>
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         </html>
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
