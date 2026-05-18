@@ -3,174 +3,193 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>ไทยในเกาหลี - เวอร์ชั่นจัดระเบียบ</title>
+<title>ไทยในเกาหลี - ระบบ EXP สมบูรณ์</title>
 <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;700&display=swap" rel="stylesheet">
 <style>
-/* --- ตั้งค่าสีและฟอนต์หลัก --- */
+/* --- ตั้งค่าพื้นฐาน --- */
 :root { --primary: #2e1a94; --accent: #ffd700; --bg: #f5f6f8; }
 * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Chakra Petch', sans-serif; }
-body { background: var(--bg); padding-bottom: 120px; overflow-x: hidden; }
+body { background: var(--bg); padding-bottom: 160px; overflow-x: hidden; }
 
-/* --- ส่วนหัว (Header) --- */
+/* --- ส่วนหัวแอป --- */
 .main-header { background: var(--primary); color: white; padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
 .logo-zone b { font-size: 18px; display: block; line-height: 1.1; }
-.logo-zone span { font-size: 10px; color: var(--accent); font-weight: bold; }
+.logo-zone span { font-size: 10px; color: var(--accent); text-shadow: 0 0 8px rgba(255,215,0,0.6); font-weight: bold; }
 
-/* --- ระบบแชทสด (Shoutbox) --- */
+/* --- แชทสด (Shoutbox) --- */
 .shoutbox-container { background: white; margin: 15px; border-radius: 12px; padding: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-#shout-display { height: 35vh; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
-.shout-msg { background: #f8f9fa; padding: 8px 12px; border-radius: 8px; border-left: 4px solid var(--primary); font-size: 14px; }
+.shout-header { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 8px; color: #666; border-bottom: 1px solid #f0f0f0; padding-bottom: 5px; }
+.online-count { color: #2ecc71; font-weight: bold; }
+#shout-display { height: 40vh; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; padding: 5px; font-size: 13px; }
+.shout-msg { background: #f8f9fa; padding: 8px 12px; border-radius: 8px; border-left: 3px solid var(--primary); word-break: break-all; }
+.shout-input-wrap { display: flex; gap: 8px; }
+.shout-input-wrap input { flex: 1; border: 1px solid #ddd; padding: 10px 15px; border-radius: 20px; outline: none; }
 
-/* --- แถบเลเวลและเมนูล่าง --- */
+/* --- หมวดหมู่และการแสดงโพสต์ --- */
+.cat-scroll { display: flex; gap: 10px; overflow-x: auto; padding: 10px 15px; background: white; border-bottom: 1px solid #eee; }
+.cat-item { padding: 6px 18px; border-radius: 20px; background: #eee; font-size: 14px; cursor: pointer; border: none; white-space: nowrap; }
+.cat-item.active { background: var(--primary); color: white; }
+.post-card { background: white; padding: 15px; border-bottom: 1px solid #eee; position: relative; cursor: pointer; }
+.post-user { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.user-avatar { width: 40px; height: 40px; border-radius: 50%; background: #eee; overflow: hidden; }
+.user-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.post-time { position: absolute; top: 15px; right: 15px; font-size: 11px; color: #aaa; }
+.post-tag { font-size: 11px; background: #f0f2ff; color: var(--primary); padding: 2px 8px; border-radius: 4px; display: inline-block; }
+.post-actions { display: flex; gap: 20px; margin-top: 15px; padding-top: 10px; border-top: 1px solid #f9f9f9; }
+.action-btn { background: none; border: none; color: #666; font-size: 13px; display: flex; align-items: center; gap: 5px; }
+
+/* --- เมนูด้านล่างและหลอด EXP --- */
 .fixed-bottom { position: fixed; bottom: 0; width: 100%; background: white; z-index: 1000; border-top: 1px solid #eee; }
-.level-wrap { padding: 10px 15px 5px; }
-.exp-bar-bg { width: 100%; height: 8px; background: #e0e0e0; border-radius: 10px; overflow: hidden; margin-top: 5px; }
-.exp-fill { width: 0%; height: 100%; background: linear-gradient(90deg, #6a11cb, #2575fc); transition: width 0.5s ease; }
-
-/* --- ปุ่มเมนู --- */
-.nav-grid { display: flex; justify-content: space-around; align-items: center; height: 60px; text-align: center; font-size: 11px; }
-.nav-btn { color: #888; cursor: pointer; flex: 1; }
+.level-wrap { padding: 8px 15px 5px; }
+.level-info { display: flex; align-items: center; gap: 10px; font-size: 12px; font-weight: bold; }
+.exp-bar-bg { flex: 1; height: 8px; background: #e0e0e0; border-radius: 10px; overflow: hidden; }
+.exp-fill { width: 0%; height: 100%; background: linear-gradient(90deg, #6a11cb, #2575fc); border-radius: 10px; transition: width 0.5s ease; }
+.nav-grid { display: flex; justify-content: space-around; align-items: center; height: 65px; text-align: center; font-size: 11px; color: #888; }
 .nav-btn.active { color: var(--primary); font-weight: bold; }
-.create-btn { width: 50px; height: 50px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; margin-top: -30px; border: 4px solid white; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+.create-btn { width: 55px; height: 55px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; margin-top: -35px; border: 4px solid white; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
 
-/* --- หน้าจอแต่ละหน้า --- */
+/* --- หน้าจออื่นๆ --- */
 .page { display: none; }
 .page.active { display: block; }
-#login-page { position: fixed; inset: 0; background: var(--primary); z-index: 5000; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; }
+#login-page { position: fixed; inset: 0; background: var(--primary); z-index: 4000; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; }
+#full-post-view { display: none; position: fixed; inset: 0; background: white; z-index: 3000; overflow-y: auto; padding-bottom: 80px; }
 </style>
 </head>
 <body>
 <div id="login-page">
-    <h1>ไทยในเกาหลี</h1>
-    <button onclick="loginGoogle()" style="margin-top:20px; padding:15px 30px; border-radius:30px; border:none; font-weight:bold; cursor:pointer;">เข้าสู่ระบบด้วย Google</button>
+    <h1>ไทยในเกาหลี</h1><p style="opacity: 0.7; margin-bottom: 40px;">เราจะรวยไปด้วยกัน</p>
+    <button onclick="loginGoogle()" style="width: 80%; max-width: 250px; padding: 15px; border-radius: 30px; border: none; font-weight: bold;">เข้าสู่ระบบด้วย Google</button>
+    </div>
+
+    <div id="full-post-view">
+    <div style="padding:15px; border-bottom:1px solid #eee; display:flex; align-items:center; gap:15px;">
+    <div onclick="closeFullPost()" style="font-size:24px; cursor:pointer;">←</div><b>ดูโพสต์</b>
+    </div>
+    <div id="full-post-content"></div>
     </div>
 
     <div id="home-page" class="page active">
-    <header class="main-header">
-    <div class="logo-zone"><b>แรงงานไทยในเกาหลี</b><span>เราจะรวยไปด้วยกัน</span></div>
-    <div>🔔</div>
-    </header>
+    <header class="main-header"><div class="logo-zone"><b>แรงงานไทยในเกาหลี</b><span>เราจะรวยไปด้วยกัน</span></div><div>🔔</div></header>
     <div class="shoutbox-container">
+    <div class="shout-header"><span>แชทสด</span><span class="online-count">🟢 ออนไลน์: <span id="online-users">1</span></span></div>
     <div id="shout-display"></div>
-    <div style="display:flex; gap:8px;">
-    <input type="text" id="shoutInput" placeholder="คุยกันสดๆ..." style="flex:1; padding:10px; border-radius:20px; border:1px solid #ddd; outline:none;">
-    <button onclick="sendShout()" style="background:var(--primary); color:white; border:none; padding:0 15px; border-radius:20px;">ส่ง</button>
+    <div class="shout-input-wrap">
+    <input type="text" id="shoutInput" placeholder="พิมพ์ข้อความ...">
+    <button onclick="sendShout()" style="padding:0 15px; background:var(--primary); color:white; border:none; border-radius:20px;">ส่ง</button>
     </div>
+    </div>
+    <div class="cat-scroll">
+    <button class="cat-item active" onclick="filterPosts('ทั้งหมด', this)">ทั้งหมด</button>
+    <button class="cat-item" onclick="filterPosts('หางาน', this)">หางาน</button>
+    <button class="cat-item" onclick="filterPosts('ทั่วไป', this)">ทั่วไป</button>
     </div>
     <div id="post-feed"></div>
     </div>
 
-    <div id="post-page" class="page">
-    <header class="main-header"><b>สร้างโพสต์ใหม่</b></header>
-    <div style="padding:15px;">
-    <input type="text" id="pTitle" placeholder="หัวข้อ" style="width:100%; padding:12px; margin-bottom:10px; border:1px solid #ddd; border-radius:8px;">
-    <textarea id="pDetail" placeholder="รายละเอียด..." style="width:100%; height:150px; padding:12px; border:1px solid #ddd; border-radius:8px;"></textarea>
-    <button onclick="savePost()" style="width:100%; padding:15px; background:var(--primary); color:white; border:none; border-radius:8px; margin-top:10px; font-weight:bold;">ลงประกาศ (+10 EXP)</button>
-    </div>
+    <div id="post-page" class="page" style="padding: 20px;">
+    <h2>สร้างโพสต์ใหม่</h2>
+    <select id="pCat" style="width:100%; padding:10px; margin-top:10px; border-radius:8px;">
+    <option value="ทั่วไป">ทั่วไป</option><option value="หางาน">หางาน</option>
+    </select>
+    <input type="text" id="pTitle" placeholder="หัวข้อ..." style="width:100%; padding:12px; margin: 15px 0; border-radius:8px; border:1px solid #ddd;">
+    <textarea id="pDetail" placeholder="รายละเอียด..." style="width:100%; height:150px; padding:12px; border-radius:8px; border:1px solid #ddd;"></textarea>
+    <button onclick="savePost()" style="width:100%; padding:15px; background:var(--primary); color:white; border-radius:10px; font-weight:bold; margin-top:20px;">ลงประกาศ (+10 EXP)</button>
     </div>
 
     <div class="fixed-bottom" id="bottom-bar" style="display:none;">
     <div class="level-wrap">
-    <div style="display:flex; justify-content:space-between; font-size:12px; font-weight:bold;">
-    <span>Lv.<span id="u-lv">1</span></span>
-    <span>EXP: <span id="u-exp">0</span>/100</span>
-    </div>
-    <div class="exp-bar-bg"><div id="exp-fill" class="exp-fill"></div></div>
+    <div class="level-info">Lv.<span id="u-lv">1</span> <div class="exp-bar-bg"><div id="exp-f" class="exp-fill"></div></div> <span id="u-exp">0</span>/100</div>
     </div>
     <nav class="nav-grid">
     <div class="nav-btn active" onclick="showPage('home-page', this)">🏠<br>หน้าหลัก</div>
     <div class="nav-btn">📁<br>หมวดหมู่</div>
-    <div class="nav-btn" onclick="showPage('post-page', this)"><div class="create-btn">+</div></div>
+    <div class="create-btn" onclick="showPage('post-page', this)">+</div>
     <div class="nav-btn">🔍<br>ค้นหา</div>
-    <div class="nav-btn">👤<br>โปรไฟล์</div>
+    <div class="nav-btn" onclick="logout()">👤<br>โปรไฟล์</div>
     </nav>
     </div>
   <script type="module">
+  // นำเข้าเครื่องมือจาก Firebase
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
   import { getDatabase, ref, push, onChildAdded, onValue, update, get } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
-  import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+  import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-  // --- ตั้งค่าเชื่อมต่อ Firebase ---
+  // ตั้งค่าที่อยู่ฐานข้อมูล
   const firebaseConfig = {
-  apiKey: "AIzaSyAaUWvOllKDx7zFf_YxfNTPo8HnRW158Mc",
+  apiKey: "AIzaSyAaUWvOllKDx7zFf_YxfNTPo8HnRW158Mc", 
   authDomain: "thai-korea-app.firebaseapp.com",
   databaseURL: "https://thai-korea-app-default-rtdb.firebaseio.com",
   projectId: "thai-korea-app"
   };
+
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
   const auth = getAuth(app);
   const provider = new GoogleAuthProvider();
-  let currentUser = null;
+  let user = null;
+  let allPosts = [];
 
-  // --- ระบบเพิ่มแต้ม EXP ---
-  async function addExp(points) {
-  if(!currentUser) return;
-  const userRef = ref(db, `users/${currentUser.uid}`);
-  const snapshot = await get(userRef);
-  let userData = snapshot.val() || { exp: 0, lv: 1 };
-  userData.exp += points;
-  if(userData.exp >= 100) {
-  userData.lv += 1;
-  userData.exp -= 100;
-  alert("ยินดีด้วย! คุณเลเวลอัพเป็น Lv." + userData.lv);
-  }
-  update(userRef, userData);
+  // ฟังก์ชันเพิ่มแต้ม EXP (ทำงานเมื่อ แชท หรือ โพสต์)
+  async function giveExp(pts) {
+  if(!user) return;
+  const uRef = ref(db, `users/${user.uid}`);
+  const snap = await get(uRef);
+  let d = snap.val() || { exp: 0, lv: 1 };
+  d.exp += pts;
+  if(d.exp >= 100) { d.lv += 1; d.exp -= 100; alert("เลเวลอัพเป็น Lv." + d.lv + " แล้ว!"); }
+  update(uRef, d);
   }
 
-  // --- ตรวจสอบการล็อกอิน ---
-  onAuthStateChanged(auth, (user) => {
-  if (user) {
-  currentUser = user;
+  // ตรวจสอบการล็อกอิน และโหลดข้อมูลเลเวล
+  onAuthStateChanged(auth, (u) => {
+  if (u) {
+  user = { uid: u.uid, name: u.displayName, photo: u.photoURL };
   document.getElementById('login-page').style.display = 'none';
   document.getElementById('bottom-bar').style.display = 'block';
-  onValue(ref(db, `users/${user.uid}`), (snap) => {
-  const d = snap.val() || { exp: 0, lv: 1 };
-  document.getElementById('u-lv').innerText = d.lv;
-  document.getElementById('u-exp').innerText = d.exp;
-  document.getElementById('exp-fill').style.width = d.exp + '%';
+  onValue(ref(db, `users/${u.uid}`), (s) => {
+  const v = s.val() || { exp: 0, lv: 1 };
+  document.getElementById('u-lv').innerText = v.lv;
+  document.getElementById('u-exp').innerText = v.exp;
+  document.getElementById('exp-f').style.width = v.exp + '%';
   });
-  } else {
-  document.getElementById('login-page').style.display = 'flex';
-  }
+  } else { document.getElementById('login-page').style.display = 'flex'; }
   });
 
-  // --- การส่งแชทสด ---
+  // ระบบส่งแชทสด (+1 EXP)
   window.sendShout = () => {
-  const input = document.getElementById('shoutInput');
-  if(input.value && currentUser) {
-  push(ref(db, "chats"), { name: currentUser.displayName, text: input.value, time: Date.now() });
-  addExp(1);
-  input.value = "";
+  const i = document.getElementById('shoutInput');
+  if(i.value && user) {
+  push(ref(db, "chats"), { name: user.name, text: i.value, time: Date.now() });
+  giveExp(1); i.value = "";
+  }
+  };
+  onChildAdded(ref(db, "chats"), (data) => {
+  const m = data.val();
+  document.getElementById('shout-display').insertAdjacentHTML('beforeend', `<div class="shout-msg"><b>${m.name}:</b> ${m.text}</div>`);
+  const d = document.getElementById('shout-display'); d.scrollTop = d.scrollHeight;
+  });
+
+  // ระบบสร้างโพสต์ใหม่ (+10 EXP)
+  window.savePost = () => {
+  const t = document.getElementById('pTitle').value, d = document.getElementById('pDetail').value, c = document.getElementById('pCat').value;
+  if(t && d && user) {
+  push(ref(db, "posts"), { title: t, detail: d, cat: c, author: user.name, uid: user.uid, photo: user.photo, time: Date.now(), likes: 0 });
+  giveExp(10); showPage('home-page');
   }
   };
 
-  onChildAdded(ref(db, "chats"), (data) => {
-  const m = data.val();
-  const box = document.getElementById('shout-display');
-  box.insertAdjacentHTML('beforeend', `<div class="shout-msg"><b>${m.name}:</b> ${m.text}</div>`);
-  box.scrollTop = box.scrollHeight;
-  });
-
-  // --- การเปลี่ยนหน้าเมนู ---
+  // ระบบเปลี่ยนหน้าจอ
   window.showPage = (id, btn) => {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById(id).classList.add('active');
+  if(btn) {
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-  if(btn) btn.classList.add('active');
-  };
-
-  // --- ฟังก์ชันเสริม ---
-  window.loginGoogle = () => signInWithPopup(auth, provider);
-  window.savePost = () => {
-  const t = document.getElementById('pTitle').value;
-  const d = document.getElementById('pDetail').value;
-  if(t && d && currentUser) {
-  push(ref(db, "posts"), { title: t, detail: d, author: currentUser.displayName, time: Date.now() });
-  addExp(10);
-  showPage('home-page');
+  btn.classList.add('active');
   }
   };
+
+  window.loginGoogle = () => signInWithPopup(auth, provider);
+  window.logout = () => signOut(auth).then(() => location.reload());
   </script>
   </body>
   </html>
