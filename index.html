@@ -119,100 +119,100 @@ body { background: var(--bg); padding-bottom: 140px; }
     import { getDatabase, ref, push, onChildAdded, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
     import { getAuth, signInWithPopup, GoogleAuthProvider, signInAnonymously, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-    // !!! ภูอย่าลืมเอารหัสจริงจาก Firebase มาใส่ให้ครบนะครับ !!!
+    // วางชุดที่ภูเพิ่งก๊อปมาตรงนี้เลย
     const firebaseConfig = {
-        apiKey: "AIzaSyAaUWvOllKDx7zFf_Y", 
-            authDomain: "thai-korea-app.firebaseapp.com",
-                projectId: "thai-korea-app",
-                    databaseURL: "https://thai-korea-app-default-rtdb.firebaseio.com",
-                        storageBucket: "thai-korea-app.appspot.com",
-                            messagingSenderId: "962758734967",
-                                appId: "1:962758734967:web:d6e5e9..." 
-                                };
+      apiKey: "AIzaSyAaUWvOllKDx7zFf_YxfNTPo8HnRW158Mc",
+        authDomain: "thai-korea-app.firebaseapp.com",
+          databaseURL: "https://thai-korea-app-default-rtdb.firebaseio.com",
+            projectId: "thai-korea-app",
+              storageBucket: "thai-korea-app.firebasestorage.app",
+                messagingSenderId: "962758734967",
+                  appId: "1:962758734967:web:d6e5e972efbd647bf94272",
+                    measurementId: "G-FD6YYTFL8F"
+                    };
 
-                                const app = initializeApp(firebaseConfig);
-                                const db = getDatabase(app);
-                                const auth = getAuth(app);
-                                const provider = new GoogleAuthProvider();
+                    const app = initializeApp(firebaseConfig);
+                    const db = getDatabase(app);
+                    const auth = getAuth(app);
+                    const provider = new GoogleAuthProvider();
 
-                                let currentUser = null;
+                    let currentUser = null;
 
-                                // แก้ไข: ทำให้ปุ่มใน HTML เรียกฟังก์ชันเหล่านี้ได้
-                                window.loginGoogle = () => {
-                                    signInWithPopup(auth, provider).catch(err => alert("เกิดข้อผิดพลาด: " + err.message));
+                    // ฟังก์ชัน Login (ทำให้เรียกจากปุ่มใน HTML ได้)
+                    window.loginGoogle = () => {
+                        signInWithPopup(auth, provider).catch(err => {
+                                alert("เข้าสู่ระบบไม่ได้: " + err.message);
+                                    });
                                     };
 
                                     window.loginGuest = () => {
-                                        signInAnonymously(auth).catch(err => alert("เกิดข้อผิดพลาด: " + err.message));
-                                        };
+                                        signInAnonymously(auth).catch(err => {
+                                                alert("เข้าสู่ระบบแบบ Guest ไม่ได้: " + err.message);
+                                                    });
+                                                    };
 
-                                        window.logout = () => {
-                                            if(confirm("ต้องการออกจากระบบใช่ไหม?")) {
-                                                    signOut(auth).then(() => {
-                                                                location.reload();
-                                                                        });
-                                                                            }
-                                                                            };
+                                                    window.logout = () => {
+                                                        if(confirm("ต้องการออกจากระบบใช่ไหม?")) {
+                                                                signOut(auth).then(() => location.reload());
+                                                                    }
+                                                                    };
 
-                                                                            // ตรวจสอบสถานะการ Login
-                                                                            onAuthStateChanged(auth, (user) => {
-                                                                                if (user) {
-                                                                                        currentUser = {
-                                                                                                    uid: user.uid,
-                                                                                                                name: user.displayName || "Guest_" + user.uid.substring(0,4),
-                                                                                                                            photo: user.photoURL || ""
-                                                                                                                                    };
-                                                                                                                                            document.getElementById('login-page').style.display = 'none';
-                                                                                                                                                    document.getElementById('home-page').classList.add('active');
-                                                                                                                                                            document.getElementById('bottom-bar').style.display = 'block';
-                                                                                                                                                                    updateUI();
-                                                                                                                                                                        } else {
-                                                                                                                                                                                document.getElementById('login-page').style.display = 'flex';
-                                                                                                                                                                                        document.getElementById('home-page').classList.remove('active');
-                                                                                                                                                                                                document.getElementById('bottom-bar').style.display = 'none';
-                                                                                                                                                                                                    }
-                                                                                                                                                                                                    });
+                                                                    // ตรวจสอบสถานะการ Login
+                                                                    onAuthStateChanged(auth, (user) => {
+                                                                        if (user) {
+                                                                                currentUser = {
+                                                                                            uid: user.uid,
+                                                                                                        name: user.displayName || "Guest_" + user.uid.substring(0,4),
+                                                                                                                    photo: user.photoURL || ""
+                                                                                                                            };
+                                                                                                                                    document.getElementById('login-page').style.display = 'none';
+                                                                                                                                            document.getElementById('home-page').classList.add('active');
+                                                                                                                                                    document.getElementById('bottom-bar').style.display = 'block';
+                                                                                                                                                            updateUI();
+                                                                                                                                                                } else {
+                                                                                                                                                                        document.getElementById('login-page').style.display = 'flex';
+                                                                                                                                                                                document.getElementById('bottom-bar').style.display = 'none';
+                                                                                                                                                                                    }
+                                                                                                                                                                                    });
 
-                                                                                                                                                                                                    function updateUI() {
-                                                                                                                                                                                                        document.getElementById('user-welcome').innerText = "สวัสดีคุณ " + currentUser.name;
-                                                                                                                                                                                                            document.getElementById('prof-name').innerText = currentUser.name;
-                                                                                                                                                                                                                document.getElementById('prof-type').innerText = currentUser.photo ? "สถานะ: บัญชี Google" : "สถานะ: Guest";
-                                                                                                                                                                                                                    
-                                                                                                                                                                                                                        const profImgDiv = document.getElementById('prof-img');
-                                                                                                                                                                                                                            if(currentUser.photo) {
-                                                                                                                                                                                                                                    profImgDiv.innerHTML = `<img src="${currentUser.photo}" style="width:100%; height:100%; object-fit:cover;">`;
-                                                                                                                                                                                                                                        } else {
-                                                                                                                                                                                                                                                profImgDiv.innerText = currentUser.name.charAt(0);
-                                                                                                                                                                                                                                                        profImgDiv.style.background = "#2196f3";
-                                                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                                            }
+                                                                                                                                                                                    function updateUI() {
+                                                                                                                                                                                        document.getElementById('user-welcome').innerText = "สวัสดีคุณ " + currentUser.name;
+                                                                                                                                                                                            document.getElementById('prof-name').innerText = currentUser.name;
+                                                                                                                                                                                                document.getElementById('prof-type').innerText = currentUser.photo ? "สถานะ: บัญชี Google" : "สถานะ: Guest";
+                                                                                                                                                                                                    const profImgDiv = document.getElementById('prof-img');
+                                                                                                                                                                                                        if(currentUser.photo) {
+                                                                                                                                                                                                                profImgDiv.innerHTML = `<img src="${currentUser.photo}" style="width:100%; height:100%; border-radius:50%;">`;
+                                                                                                                                                                                                                    } else {
+                                                                                                                                                                                                                            profImgDiv.innerText = currentUser.name.charAt(0);
+                                                                                                                                                                                                                                    profImgDiv.style.background = "#2196f3";
+                                                                                                                                                                                                                                        }
+                                                                                                                                                                                                                                        }
 
-                                                                                                                                                                                                                                                            // ผูกฟังก์ชันอื่นๆ เข้ากับ window เพื่อให้ HTML เรียกใช้งานได้
-                                                                                                                                                                                                                                                            window.showPage = (pageId) => {
-                                                                                                                                                                                                                                                                document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-                                                                                                                                                                                                                                                                    document.getElementById(pageId).classList.add('active');
-                                                                                                                                                                                                                                                                        
-                                                                                                                                                                                                                                                                            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-                                                                                                                                                                                                                                                                                if(pageId === 'home-page') document.getElementById('nav-home').classList.add('active');
-                                                                                                                                                                                                                                                                                    if(pageId === 'cat-page') document.getElementById('nav-cat').classList.add('active');
-                                                                                                                                                                                                                                                                                        if(pageId === 'profile-page') document.getElementById('nav-profile').classList.add('active');
+                                                                                                                                                                                                                                        // ผูกฟังก์ชันอื่นๆ
+                                                                                                                                                                                                                                        window.showPage = (pageId) => {
+                                                                                                                                                                                                                                            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+                                                                                                                                                                                                                                                document.getElementById(pageId).classList.add('active');
+                                                                                                                                                                                                                                                    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+                                                                                                                                                                                                                                                        if(pageId === 'home-page') document.getElementById('nav-home').classList.add('active');
+                                                                                                                                                                                                                                                            if(pageId === 'profile-page') document.getElementById('nav-profile').classList.add('active');
+                                                                                                                                                                                                                                                            };
+
+                                                                                                                                                                                                                                                            window.sendChat = () => {
+                                                                                                                                                                                                                                                                const input = document.getElementById('chatInput');
+                                                                                                                                                                                                                                                                    if (input.value.trim() !== "" && currentUser) {
+                                                                                                                                                                                                                                                                            push(ref(db, "chats"), { name: currentUser.name, text: input.value, photo: currentUser.photo, time: Date.now() });
+                                                                                                                                                                                                                                                                                    input.value = "";
+                                                                                                                                                                                                                                                                                        }
                                                                                                                                                                                                                                                                                         };
 
-                                                                                                                                                                                                                                                                                        window.sendChat = () => {
-                                                                                                                                                                                                                                                                                            const input = document.getElementById('chatInput');
-                                                                                                                                                                                                                                                                                                if (input.value.trim() !== "" && currentUser) {
-                                                                                                                                                                                                                                                                                                        push(ref(db, "chats"), { 
-                                                                                                                                                                                                                                                                                                                    name: currentUser.name, 
-                                                                                                                                                                                                                                                                                                                                text: input.value, 
-                                                                                                                                                                                                                                                                                                                                            photo: currentUser.photo, 
-                                                                                                                                                                                                                                                                                                                                                        time: Date.now() 
-                                                                                                                                                                                                                                                                                                                                                                });
-                                                                                                                                                                                                                                                                                                                                                                        input.value = "";
-                                                                                                                                                                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                                                                                                                                                            };
-
-                                                                                                                                                                                                                                                                                                                                                                            // ส่วนที่เหลือ (Chat, Post, Delete) โค้ดเดิมของภูใช้ได้เลยครับ 
-                                                                                                                                                                                                                                                                                                                                                                            // แต่ต้องอย่าลืมเปลี่ยนฟังก์ชันเป็น window.ชื่อฟังก์ชัน ด้วยนะถ้าประกาศใน module
-                                                                                                                                                                                                                                                                                                                                                                            </script>
+                                                                                                                                                                                                                                                                                        onChildAdded(ref(db, "chats"), (data) => {
+                                                                                                                                                                                                                                                                                            const chat = data.val();
+                                                                                                                                                                                                                                                                                                const avatar = chat.photo ? `<img src="${chat.photo}">` : chat.name.charAt(0);
+                                                                                                                                                                                                                                                                                                    const html = `<div class="chat-msg"><div class="avatar">${avatar}</div><div class="msg-content"><strong>${chat.name}</strong><br>${chat.text}</div></div>`;
+                                                                                                                                                                                                                                                                                                        const display = document.getElementById('chat-display');
+                                                                                                                                                                                                                                                                                                            display.insertAdjacentHTML('beforeend', html);
+                                                                                                                                                                                                                                                                                                                display.scrollTop = display.scrollHeight;
+                                                                                                                                                                                                                                                                                                                });
+                                                                                                                                                                                                                                                                                                                </script>
 </body>
 </html>
