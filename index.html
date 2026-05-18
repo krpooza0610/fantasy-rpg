@@ -115,137 +115,104 @@ body { background: var(--bg); padding-bottom: 140px; }
 </div>
 
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getDatabase, ref, push, onChildAdded, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
-import { getAuth, signInWithPopup, GoogleAuthProvider, signInAnonymously, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getDatabase, ref, push, onChildAdded, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+    import { getAuth, signInWithPopup, GoogleAuthProvider, signInAnonymously, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-const firebaseConfig = {
-apiKey: "AIzaSyAaUWvOllKDx7zFf_Y",
-authDomain: "thai-korea-app.firebaseapp.com",
-projectId: "thai-korea-app",
-databaseURL: "https://thai-korea-app-default-rtdb.firebaseio.com",
-storageBucket: "thai-korea-app.appspot.com",
-messagingSenderId: "962758734967",
-appId: "1:962758734967:web:d6e5e9...",
-};
+    // !!! ภูอย่าลืมเอารหัสจริงจาก Firebase มาใส่ให้ครบนะครับ !!!
+    const firebaseConfig = {
+        apiKey: "AIzaSyAaUWvOllKDx7zFf_Y", 
+            authDomain: "thai-korea-app.firebaseapp.com",
+                projectId: "thai-korea-app",
+                    databaseURL: "https://thai-korea-app-default-rtdb.firebaseio.com",
+                        storageBucket: "thai-korea-app.appspot.com",
+                            messagingSenderId: "962758734967",
+                                appId: "1:962758734967:web:d6e5e9..." 
+                                };
 
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
-const auth = getAuth(app);
-const provider = new GoogleAuthProvider();
+                                const app = initializeApp(firebaseConfig);
+                                const db = getDatabase(app);
+                                const auth = getAuth(app);
+                                const provider = new GoogleAuthProvider();
 
-let currentUser = null;
+                                let currentUser = null;
 
-// ฟังก์ชัน Login
-window.loginGoogle = () => {
-signInWithPopup(auth, provider).catch(err => alert("เกิดข้อผิดพลาด: " + err.message));
-};
+                                // แก้ไข: ทำให้ปุ่มใน HTML เรียกฟังก์ชันเหล่านี้ได้
+                                window.loginGoogle = () => {
+                                    signInWithPopup(auth, provider).catch(err => alert("เกิดข้อผิดพลาด: " + err.message));
+                                    };
 
-window.loginGuest = () => {
-signInAnonymously(auth).catch(err => alert("เกิดข้อผิดพลาด: " + err.message));
-};
+                                    window.loginGuest = () => {
+                                        signInAnonymously(auth).catch(err => alert("เกิดข้อผิดพลาด: " + err.message));
+                                        };
 
-window.logout = () => {
-if(confirm("ต้องการออกจากระบบใช่ไหม?")) signOut(auth).then(() => location.reload());
-};
+                                        window.logout = () => {
+                                            if(confirm("ต้องการออกจากระบบใช่ไหม?")) {
+                                                    signOut(auth).then(() => {
+                                                                location.reload();
+                                                                        });
+                                                                            }
+                                                                            };
 
-// ตรวจสอบสถานะการ Login
-onAuthStateChanged(auth, (user) => {
-if (user) {
-currentUser = {
-uid: user.uid,
-name: user.displayName || "Guest_" + user.uid.substring(0,4),
-photo: user.photoURL || ""
-};
-document.getElementById('login-page').style.display = 'none';
-document.getElementById('home-page').classList.add('active');
-document.getElementById('bottom-bar').style.display = 'block';
-updateUI();
-} else {
-document.getElementById('login-page').style.display = 'flex';
-}
-});
+                                                                            // ตรวจสอบสถานะการ Login
+                                                                            onAuthStateChanged(auth, (user) => {
+                                                                                if (user) {
+                                                                                        currentUser = {
+                                                                                                    uid: user.uid,
+                                                                                                                name: user.displayName || "Guest_" + user.uid.substring(0,4),
+                                                                                                                            photo: user.photoURL || ""
+                                                                                                                                    };
+                                                                                                                                            document.getElementById('login-page').style.display = 'none';
+                                                                                                                                                    document.getElementById('home-page').classList.add('active');
+                                                                                                                                                            document.getElementById('bottom-bar').style.display = 'block';
+                                                                                                                                                                    updateUI();
+                                                                                                                                                                        } else {
+                                                                                                                                                                                document.getElementById('login-page').style.display = 'flex';
+                                                                                                                                                                                        document.getElementById('home-page').classList.remove('active');
+                                                                                                                                                                                                document.getElementById('bottom-bar').style.display = 'none';
+                                                                                                                                                                                                    }
+                                                                                                                                                                                                    });
 
-function updateUI() {
-document.getElementById('user-welcome').innerText = "สวัสดีคุณ " + currentUser.name;
-document.getElementById('prof-name').innerText = currentUser.name;
-document.getElementById('prof-type').innerText = currentUser.photo ? "สถานะ: บัญชี Google" : "สถานะ: Guest";
-if(currentUser.photo) document.getElementById('prof-img').innerHTML = `<img src="${currentUser.photo}">`;
-}
+                                                                                                                                                                                                    function updateUI() {
+                                                                                                                                                                                                        document.getElementById('user-welcome').innerText = "สวัสดีคุณ " + currentUser.name;
+                                                                                                                                                                                                            document.getElementById('prof-name').innerText = currentUser.name;
+                                                                                                                                                                                                                document.getElementById('prof-type').innerText = currentUser.photo ? "สถานะ: บัญชี Google" : "สถานะ: Guest";
+                                                                                                                                                                                                                    
+                                                                                                                                                                                                                        const profImgDiv = document.getElementById('prof-img');
+                                                                                                                                                                                                                            if(currentUser.photo) {
+                                                                                                                                                                                                                                    profImgDiv.innerHTML = `<img src="${currentUser.photo}" style="width:100%; height:100%; object-fit:cover;">`;
+                                                                                                                                                                                                                                        } else {
+                                                                                                                                                                                                                                                profImgDiv.innerText = currentUser.name.charAt(0);
+                                                                                                                                                                                                                                                        profImgDiv.style.background = "#2196f3";
+                                                                                                                                                                                                                                                            }
+                                                                                                                                                                                                                                                            }
 
-window.showPage = (pageId) => {
-document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-document.getElementById(pageId).classList.add('active');
-document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-if(pageId === 'home-page') document.getElementById('nav-home').classList.add('active');
-if(pageId === 'profile-page') document.getElementById('nav-profile').classList.add('active');
-};
+                                                                                                                                                                                                                                                            // ผูกฟังก์ชันอื่นๆ เข้ากับ window เพื่อให้ HTML เรียกใช้งานได้
+                                                                                                                                                                                                                                                            window.showPage = (pageId) => {
+                                                                                                                                                                                                                                                                document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+                                                                                                                                                                                                                                                                    document.getElementById(pageId).classList.add('active');
+                                                                                                                                                                                                                                                                        
+                                                                                                                                                                                                                                                                            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+                                                                                                                                                                                                                                                                                if(pageId === 'home-page') document.getElementById('nav-home').classList.add('active');
+                                                                                                                                                                                                                                                                                    if(pageId === 'cat-page') document.getElementById('nav-cat').classList.add('active');
+                                                                                                                                                                                                                                                                                        if(pageId === 'profile-page') document.getElementById('nav-profile').classList.add('active');
+                                                                                                                                                                                                                                                                                        };
 
-window.sendChat = () => {
-const input = document.getElementById('chatInput');
-if (input.value.trim() !== "" && currentUser) {
-push(ref(db, "chats"), { name: currentUser.name, text: input.value, photo: currentUser.photo, time: Date.now() });
-input.value = "";
-}
-};
+                                                                                                                                                                                                                                                                                        window.sendChat = () => {
+                                                                                                                                                                                                                                                                                            const input = document.getElementById('chatInput');
+                                                                                                                                                                                                                                                                                                if (input.value.trim() !== "" && currentUser) {
+                                                                                                                                                                                                                                                                                                        push(ref(db, "chats"), { 
+                                                                                                                                                                                                                                                                                                                    name: currentUser.name, 
+                                                                                                                                                                                                                                                                                                                                text: input.value, 
+                                                                                                                                                                                                                                                                                                                                            photo: currentUser.photo, 
+                                                                                                                                                                                                                                                                                                                                                        time: Date.now() 
+                                                                                                                                                                                                                                                                                                                                                                });
+                                                                                                                                                                                                                                                                                                                                                                        input.value = "";
+                                                                                                                                                                                                                                                                                                                                                                            }
+                                                                                                                                                                                                                                                                                                                                                                            };
 
-onChildAdded(ref(db, "chats"), (data) => {
-const chat = data.val();
-const avatar = chat.photo ? `<img src="${chat.photo}">` : chat.name.charAt(0);
-const html = `<div class="chat-msg"><div class="avatar">${avatar}</div><div class="msg-content"><strong>${chat.name}</strong><br>${chat.text}</div></div>`;
-const display = document.getElementById('chat-display');
-display.insertAdjacentHTML('beforeend', html);
-display.scrollTop = display.scrollHeight;
-});
-
-window.submitPost = () => {
-const title = document.getElementById('postTitle').value;
-const detail = document.getElementById('postDetail').value;
-const img = document.getElementById('postImageUrl').value;
-const cat = document.getElementById('postCat').value;
-if (title.trim() && detail.trim() && currentUser) {
-push(ref(db, "posts"), { title, detail, img, cat, author: currentUser.name, uid: currentUser.uid, time: Date.now() })
-.then(() => {
-document.getElementById('postTitle').value = "";
-document.getElementById('postDetail').value = "";
-showPage('home-page');
-});
-}
-};
-
-let allPosts = [];
-onChildAdded(ref(db, "posts"), (data) => {
-const post = { id: data.key, ...data.val() };
-allPosts.unshift(post);
-renderPosts(allPosts);
-});
-
-function renderPosts(posts) {
-const feed = document.getElementById('post-feed');
-feed.innerHTML = "";
-posts.forEach(post => {
-const delBtn = (currentUser && post.uid === currentUser.uid) ? `<button onclick="deletePost('${post.id}')" style="position:absolute; top:10px; right:15px; border:none; background:none; color:red;">🗑️</button>` : '';
-const imgHtml = post.img ? `<img src="${post.img}" style="width:100%; border-radius:10px; margin-top:10px;">` : '';
-const card = `<div class="shoutbox" id="${post.id}" style="position:relative;">${delBtn}<span style="font-size:10px; background:#eee; padding:2px 8px; border-radius:10px;">${post.cat}</span><br><strong>${post.title}</strong><p style="font-size:14px; margin-top:8px;">${post.detail}</p>${imgHtml}<br><small style="color:#aaa;">โดย: ${post.author}</small></div>`;
-feed.insertAdjacentHTML('beforeend', card);
-});
-}
-
-window.filterPosts = (category, btn) => {
-if(btn) {
-document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-btn.classList.add('active');
-}
-renderPosts(category === 'ทั้งหมด' ? allPosts : allPosts.filter(p => p.cat === category));
-};
-
-window.deletePost = (id) => {
-if(confirm("ลบโพสต์นี้ใช่ไหม?")) {
-remove(ref(db, "posts/" + id));
-allPosts = allPosts.filter(p => p.id !== id);
-renderPosts(allPosts);
-}
-};
-</script>
+                                                                                                                                                                                                                                                                                                                                                                            // ส่วนที่เหลือ (Chat, Post, Delete) โค้ดเดิมของภูใช้ได้เลยครับ 
+                                                                                                                                                                                                                                                                                                                                                                            // แต่ต้องอย่าลืมเปลี่ยนฟังก์ชันเป็น window.ชื่อฟังก์ชัน ด้วยนะถ้าประกาศใน module
+                                                                                                                                                                                                                                                                                                                                                                            </script>
 </body>
 </html>
